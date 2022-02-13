@@ -3,7 +3,7 @@
 /**
  * @author Masaru Yamagishi <yamagishi.iloop@gmail.com>
  * @copyright 2022 Masaru Yamagishi
- * @license Apache 2.0
+ * @license Apache License 2.0
  */
 
 declare(strict_types=1);
@@ -14,7 +14,6 @@ use function header;
 use function headers_sent;
 use function ob_get_length;
 use function ob_get_level;
-use function ucwords;
 
 /**
  * @internal
