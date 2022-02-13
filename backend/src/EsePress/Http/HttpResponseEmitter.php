@@ -13,7 +13,6 @@ namespace EsePress\Http;
 use EsePress\Contracts\Http\IHttpResponseEmitter;
 use Psr\Http\Message\ResponseInterface;
 
-use function _;
 use function assert;
 use function fastcgi_finish_request;
 use function function_exists;
@@ -49,7 +48,7 @@ class HttpResponseEmitter implements IHttpResponseEmitter
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
-        exit(0);
+        exit;
     }
 
     /**
@@ -61,13 +60,13 @@ class HttpResponseEmitter implements IHttpResponseEmitter
     {
         if ($this->wrapper->hasSentHeader()) {
             throw new EmitException(sprintf(
-                _('It could not emit after headers has sent'),
+                'It could not emit after headers has sent',
             ));
         }
 
         if ($this->wrapper->hasObFlushed()) {
             throw new EmitException(
-                _('It could not emit after ob has sent'),
+                'It could not emit after ob has sent',
             );
         }
     }
