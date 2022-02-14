@@ -23,7 +23,7 @@ class HttpRunner implements IHttpRunner
     public function __construct(
         private readonly RequestHandlerInterface $handler,
         private readonly IHttpErrorHandler $error_handler,
-        private readonly ?IHttpResponseEmitter $emitter = new HttpResponseEmitter(new HttpEmitterWrapper()),
+        private readonly IHttpResponseEmitter $emitter = new HttpResponseEmitter(new HttpEmitterWrapper()),
     ) {
     }
 

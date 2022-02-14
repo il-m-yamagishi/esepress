@@ -1,6 +1,6 @@
 {
-    "name": "esepress/core",
-    "description": "EsePress core package",
+    "name": "esepress/container",
+    "description": "EsePress container package",
     "keywords": ["EsePress", "WordPress"],
     "type": "library",
     "license": "Apache License 2.0",
@@ -11,12 +11,15 @@
         }
     ],
     "require": {
-        "php": ">=8.1.0"
+        "php": ">=8.1.0",
+        "psr/container": "^2.0"
     },
-    "require-dev": {},
+    "provide": {
+        "psr/container-implementation": "2.0"
+    },
     "autoload": {
         "psr-4": {
-            "EsePress\\Core\\": ""
+            "EsePress\\Container\\": ""
         }
     }
 }
