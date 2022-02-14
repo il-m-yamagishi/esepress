@@ -1,0 +1,23 @@
+{
+    "name": "semplice/contracts",
+    "description": "Semplice constracts package",
+    "keywords": ["Semplice", "WordPress"],
+    "type": "library",
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "Masaru Yamagishi",
+            "email": "yamagishi.iloop@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1.0",
+        "psr/http-message": "^1.0",
+        "psr/container": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Semplice\\Contracts\\": ""
+        }
+    }
+}

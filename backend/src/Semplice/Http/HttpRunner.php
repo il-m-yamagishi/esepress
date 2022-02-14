@@ -8,16 +8,19 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http;
+namespace Semplice\Http;
 
-use EsePress\Contracts\Http\IHttpErrorHandler;
-use EsePress\Contracts\Http\IHttpResponseEmitter;
-use EsePress\Contracts\Http\IHttpRunner;
+use Semplice\Contracts\Http\IHttpErrorHandler;
+use Semplice\Contracts\Http\IHttpResponseEmitter;
+use Semplice\Contracts\Http\IHttpRunner;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Throwable;
 
+/**
+ * @package \Semplice\Http
+ */
 class HttpRunner implements IHttpRunner
 {
     public function __construct(
@@ -32,6 +35,7 @@ class HttpRunner implements IHttpRunner
      */
     public function run(ServerRequestInterface $request): never
     {
+        $response = null;
         try {
             $response = $this->handler->handle($request);
         } catch (Throwable $throwable) {

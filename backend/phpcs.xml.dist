@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="EsePress Ruleset">
+<ruleset name="Semplice Ruleset">
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <arg name="extensions" value="php"/>
     <rule ref="PSR12"/>

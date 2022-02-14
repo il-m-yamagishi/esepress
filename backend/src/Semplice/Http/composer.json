@@ -1,7 +1,7 @@
 {
-    "name": "esepress/contracts",
-    "description": "EsePress constracts package",
-    "keywords": ["EsePress", "WordPress"],
+    "name": "semplice/http",
+    "description": "Semplice HTTP package",
+    "keywords": ["Semplice", "WordPress"],
     "type": "library",
     "license": "Apache License 2.0",
     "authors": [
@@ -13,11 +13,12 @@
     "require": {
         "php": ">=8.1.0",
         "psr/http-message": "^1.0",
-        "psr/container": "^2.0"
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "EsePress\\Contracts\\": ""
+            "Semplice\\Http\\": ""
         }
     }
 }

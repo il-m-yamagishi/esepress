@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Contracts\Http;
+namespace Semplice\Contracts\Http;
 
 use Psr\Http\Message\ResponseInterface;
 

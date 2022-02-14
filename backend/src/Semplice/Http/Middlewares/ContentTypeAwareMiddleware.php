@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http\Middlewares;
+namespace Semplice\Http\Middlewares;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,7 +16,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 
-class ContentLengthAwareMiddleware implements MiddlewareInterface
+class ContentTypeAwareMiddleware implements MiddlewareInterface
 {
     private const HEADER_NAME = 'Content-Type';
 
@@ -38,6 +38,6 @@ class ContentLengthAwareMiddleware implements MiddlewareInterface
             return $response->withHeader(self::HEADER_NAME, 'application/json');
         }
 
-        throw new RuntimeException('Please set Content-Type');
+        throw new RuntimeException('Please manually set Content-Type header');
     }
 }

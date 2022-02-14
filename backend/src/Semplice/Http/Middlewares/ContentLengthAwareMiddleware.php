@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http\Middlewares;
+namespace Semplice\Http\Middlewares;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

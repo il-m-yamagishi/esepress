@@ -8,16 +8,16 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http\Tests;
+namespace Semplice\Http\Tests;
 
-use EsePress\Http\HttpEmitterWrapper;
-use EsePress\Http\HttpResponseEmitter;
+use Semplice\Http\HttpEmitterWrapper;
+use Semplice\Http\HttpResponseEmitter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @coversDefaultClass \EsePress\Http\HttpResponseEmitter
+ * @coversDefaultClass \Semplice\Http\HttpResponseEmitter
  */
 class HttpResponseEmitterTest extends TestCase
 {

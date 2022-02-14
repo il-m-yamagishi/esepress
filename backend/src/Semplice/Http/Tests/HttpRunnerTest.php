@@ -8,21 +8,20 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http\Tests;
+namespace Semplice\Http\Tests;
 
-use EsePress\Contracts\Http\IHttpErrorHandler;
-use EsePress\Contracts\Http\IHttpResponseEmitter;
-use EsePress\Http\HttpRunner;
+use Semplice\Contracts\Http\IHttpErrorHandler;
+use Semplice\Contracts\Http\IHttpResponseEmitter;
+use Semplice\Http\HttpRunner;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Promise\ReturnArgumentPromise;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * @coversDefaultClass \EsePress\Http\HttpRunner
+ * @coversDefaultClass \Semplice\Http\HttpRunner
  */
 class HttpRunnerTest extends TestCase
 {
@@ -34,8 +33,6 @@ class HttpRunnerTest extends TestCase
      */
     public function test_run(): void
     {
-        $this->markTestIncomplete('never return type is not supported?');
-
         $server_request = $this->prophesize(ServerRequestInterface::class);
         $response = $this->prophesize(ResponseInterface::class);
 
@@ -57,5 +54,8 @@ class HttpRunnerTest extends TestCase
         );
 
         $runner->run($server_request->reveal());
+
+        /** @psalm-suppress UnevaluatedCode */
+        $this->markTestIncomplete('never return type is not yet supported?');
     }
 }

@@ -6,7 +6,7 @@
 >
     <testsuites>
         <testsuite name="Unit">
-            <directory suffix="Test.php">./src/EsePress/*/Tests</directory>
+            <directory suffix="Test.php">./src/Semplice/*/Tests</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">

@@ -1,5 +1,5 @@
 {
-    "name": "esepress/esepress",
+    "name": "semplice/semplice",
     "description": "Copy of WordPress for study",
     "license": "Apache License 2.0",
     "authors": [
@@ -17,19 +17,21 @@
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.16.1",
         "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
         "slevomat/coding-standard": "^7.0",
         "squizlabs/php_codesniffer": "^3.6",
         "vimeo/psalm": "^4.20"
     },
     "autoload": {
         "psr-4": {
-            "EsePress\\": "src/EsePress/"
+            "Semplice\\": "src/Semplice/"
         }
     },
     "replace": {
-        "esepress/container": "self.version",
-        "esepress/contracts": "self.version",
-        "esepress/http": "self.version"
+        "semplice/container": "self.version",
+        "semplice/contracts": "self.version",
+        "semplice/http": "self.version",
+        "semplice/routing": "self.version"
     },
     "config": {
         "optimize-autoloader": true,

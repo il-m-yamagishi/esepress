@@ -8,13 +8,13 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http;
+namespace Semplice\Contracts\Container;
 
-use RuntimeException;
+use LogicException;
 
 /**
- * Errors when emitting
+ * It is already bound to container, so it cannot bind
  */
-class EmitException extends RuntimeException
+class AlreadyBoundException extends LogicException
 {
 }

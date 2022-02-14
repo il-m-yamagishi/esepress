@@ -1,7 +1,7 @@
 {
-    "name": "esepress/container",
-    "description": "EsePress container package",
-    "keywords": ["EsePress", "WordPress"],
+    "name": "semplice/container",
+    "description": "Semplice container package",
+    "keywords": ["Semplice", "WordPress"],
     "type": "library",
     "license": "Apache License 2.0",
     "authors": [
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "EsePress\\Container\\": ""
+            "Semplice\\Container\\": ""
         }
     }
 }

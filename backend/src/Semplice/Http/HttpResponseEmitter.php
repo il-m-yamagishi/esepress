@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http;
+namespace Semplice\Http;
 
-use EsePress\Contracts\Http\IHttpResponseEmitter;
+use Semplice\Contracts\Http\IHttpResponseEmitter;
 use Psr\Http\Message\ResponseInterface;
 
 use function assert;
@@ -19,6 +19,9 @@ use function function_exists;
 use function is_string;
 use function ucwords;
 
+/**
+ * @package \Semplice\Http
+ */
 class HttpResponseEmitter implements IHttpResponseEmitter
 {
     public function __construct(

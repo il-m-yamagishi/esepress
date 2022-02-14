@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace EsePress\Http;
+namespace Semplice\Http;
 
 use function header;
 use function headers_sent;
@@ -16,8 +16,9 @@ use function ob_get_length;
 use function ob_get_level;
 
 /**
+ * global functions wrapper
  * @internal
- * Global functions wrapper
+ * @psalm-internal Semplice\Http
  */
 class HttpEmitterWrapper
 {
