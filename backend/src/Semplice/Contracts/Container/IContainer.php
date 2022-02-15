@@ -108,12 +108,12 @@ interface IContainer extends ContainerInterface
      * Invokes callback with auto injection
      *
      * @template T
-     * @param Closure $callback
-     * @psalm-param Closure(...mixed):T $callback
+     * @param callable $func
+     * @psalm-param callable(...mixed):T $func
      * @param array<string, mixed> $parameters additional concrete parameters
-     * @return mixed callback result
+     * @return mixed function result
      * @psalm-return T
      * @throws CouldNotBeResolvedException
      */
-    public function call(Closure $callback, array $parameters = []): mixed;
+    public function call(callable $func, array $parameters = []): mixed;
 }

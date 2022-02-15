@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace Semplice\Container;
 
+use Closure;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunction;
 use ReflectionIntersectionType;
 use ReflectionParameter;
 use ReflectionUnionType;
@@ -89,12 +91,49 @@ class ClassResolver
      */
     public function canResolve(string $concrete, Container $container): bool
     {
+        /** @todo avoid try-catch in regular case */
         try {
             $this->resolve($concrete, $container);
             return true;
         } catch (ReflectionException $_) {
             return false;
         }
+    }
+
+    /**
+     * Calls method with injection
+     *
+     * @template T
+     * @param callable $func
+     * @psalm-param callable(...mixed):T $func
+     * @param Container $container
+     * @param array $parameters
+     * @return mixed
+     * @psalm-return T
+     */
+    public function call(callable $func, Container $container, array $parameters = []): mixed
+    {
+        $ref = new ReflectionFunction(Closure::fromCallable($func));
+
+        $params = $ref->getParameters();
+
+        if (count($params) === 0) {
+            // No parameter function
+            return $ref->invoke();
+        }
+
+        $resolved_params = [];
+        foreach ($params as $param) {
+            $name = $param->getName();
+            if (array_key_exists($name, $parameters)) {
+                // prefer requested parameters
+                $resolved_params[$name] = $parameters[$name];
+            } else {
+                $resolved_params[$name] = $this->resolveParameter($param, $container);
+            }
+        }
+
+        return $ref->invokeArgs($resolved_params);
     }
 
     /**

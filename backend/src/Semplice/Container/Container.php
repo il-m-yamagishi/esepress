@@ -147,8 +147,8 @@ class Container implements IContainer
     /**
      * {@inheritDoc}
      */
-    public function call(Closure $callback, array $parameters = []): mixed
+    public function call(callable $func, array $parameters = []): mixed
     {
-        throw new \LogicException('Not yet implemented');
+        return $this->resolver->call($func, $this, $parameters);
     }
 }

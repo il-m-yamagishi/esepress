@@ -160,6 +160,25 @@ class ClassResolverTest extends TestCase
 
         $resolver->resolve(ClassResolverD::class, $container);
     }
+
+    /**
+     * @test
+     */
+    public function test_call_function(): void
+    {
+        $resolver = new ClassResolver();
+        // depends on concrete class to reproduce recursive get
+        $container = new Container($resolver);
+
+        $a = new ClassResolverA('config_test');
+        $container->instance(ClassResolverA::class, $a);
+
+        $func = fn (ClassResolverB $b) => true;
+
+        $actual = $resolver->call($func, $container, compact('a'));
+
+        $this->assertTrue($actual);
+    }
 }
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
