@@ -1,6 +1,7 @@
 # Semplice the modern web framework
 
 > Semplice means "simple" in Italiano.
+> センプリチェ, sémplitʃèi
 
 ## Prerequisites
 
@@ -25,7 +26,7 @@
 
 ## Install
 
-[Please see in skeleton repository](https://github.com/il-m-yamagishi/semplice-skeleton).
+[Please see in template repository](https://github.com/il-m-yamagishi/semplice-template).
 
 ## Contribute
 

@@ -12,7 +12,9 @@ namespace Semplice\Container;
 
 use ReflectionClass;
 use ReflectionException;
-use ReflectionMethod;
+use ReflectionIntersectionType;
+use ReflectionParameter;
+use ReflectionUnionType;
 
 /**
  * @internal
@@ -20,61 +22,116 @@ use ReflectionMethod;
  */
 class ClassResolver
 {
-    public function __construct(
-        private readonly Container $container,
-    ) {
-    }
+    /**
+     * Currently resolving concrete class name to detect infinite loop.
+     *
+     * @var array
+     * @psalm-var array<class-string, boolean>
+     */
+    private array $resolvingConcretes = [];
 
     /**
      * Resolves concrete instance and instanciate that.
      *
-     * @param class-string $concrete
-     * @return object
+     * @template T
+     * @param class-string<T> $concrete
+     * @param Container $container
+     * @return T
      */
-    public function resolve(string $concrete): object
+    public function resolve(string $concrete, Container $container): object
     {
         $ref = new ReflectionClass($concrete);
 
         if (!$ref->isInstantiable()) {
-            throw new ReflectionException(sprintf('concrete %s cannot be instanciated', $concrete));
+            throw new ReflectionException(sprintf(
+                'Could not resolve class "%s", it must have concrete and public constructor',
+                $concrete,
+            ));
         }
+
+        if (array_key_exists($concrete, $this->resolvingConcretes)) {
+            throw new ReflectionException(sprintf(
+                'Resolve infinite loop detected on "%s"',
+                $concrete,
+            ));
+        }
+        $this->resolvingConcretes[$concrete] = true;
 
         $constructor = $ref->getConstructor();
         if ($constructor === null) {
             // No constructor, it can make no args
+            unset($this->resolvingConcretes[$concrete]);
             return $ref->newInstance();
         }
 
-        /** @todo implementation */
-        throw new \LogicException('Not implemented yet');
+        $params = $constructor->getParameters();
+
+        if (count($params) === 0) {
+            // No parameter constructor
+            unset($this->resolvingConcretes[$concrete]);
+            return $ref->newInstance();
+        }
+
+        $resolved_params = [];
+        foreach ($params as $param) {
+            $resolved_params[$param->getName()] = $this->resolveParameter($param, $container);
+        }
+
+        unset($this->resolvingConcretes[$concrete]);
+        return $ref->newInstanceArgs($resolved_params);
     }
 
     /**
      * Whether concrete class can resolve?
      *
      * @param string $concrete
-     * @return boolean
+     * @return bool
      */
-    public function canResolve(string $concrete): bool
+    public function canResolve(string $concrete, Container $container): bool
     {
-        $ref = new ReflectionClass($concrete);
-
-        if (!$ref->isInstantiable()) {
+        try {
+            $this->resolve($concrete, $container);
+            return true;
+        } catch (ReflectionException $_) {
             return false;
         }
-        return true;
     }
 
     /**
-     * Resolves instance specific method.
+     * Resolves one parameter
      *
-     * @param object $instance
-     * @param string $method_name
-     * @return mixed
+     * @param ReflectionParameter $parameter
+     * @param Container $container
+     * @return object
      */
-    public function resolveMethod(object $instance, string $method_name): mixed
+    private function resolveParameter(ReflectionParameter $parameter, Container $container): object
     {
-        /** @todo implementation */
-        throw new \LogicException('Not implemented yet');
+        $type = $parameter->getType();
+        if ($type === null) {
+            throw new ReflectionException(sprintf('Could not resolve parameter that "%s" is null', $parameter->getName()));
+        } elseif ($type instanceof ReflectionUnionType) {
+            throw new ReflectionException(sprintf('Could not resolve parameter that "%s" is UnionType', $parameter->getName()));
+        } elseif ($type instanceof ReflectionIntersectionType) {
+            throw new ReflectionException(sprintf('Could not resolve parameter that "%s" is IntersectionType', $parameter->getName()));
+        }
+
+        $name = $type->getName();
+
+        if (
+            $name === 'bool' ||
+            $name === 'int' ||
+            $name === 'float' ||
+            $name === 'double' ||
+            $name === 'string' ||
+            $name === 'array' ||
+            $name === 'object' ||
+            $name === 'callable' ||
+            $name === 'iterable' ||
+            $name === 'resource'
+        ) {
+            throw new ReflectionException(sprintf('Primitive type "%s" cannot resolve', $name));
+        }
+
+        return $container->get($name);
     }
 }

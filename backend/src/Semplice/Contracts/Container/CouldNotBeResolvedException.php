@@ -17,13 +17,4 @@ use LogicException;
  */
 class CouldNotBeResolvedException extends LogicException
 {
-    /**
-     * Constructor
-     *
-     * @param string $class_name Unresolved class name
-     */
-    public function __construct(string $class_name)
-    {
-        parent::__construct(sprintf('class %s could not be resolved', $class_name));
-    }
 }

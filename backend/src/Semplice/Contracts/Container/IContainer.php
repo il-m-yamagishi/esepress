@@ -22,9 +22,10 @@ interface IContainer extends ContainerInterface
      * Bind instance
      * If it is already bound, it emits exception.
      *
+     * @template T
      * @param string $abstract
-     * @psalm-param class-string $abstract
-     * @param object $instance
+     * @psalm-param class-string<T> $abstract
+     * @param T $instance
      * @return void
      * @throws AlreadyBoundException
      */
@@ -59,9 +60,10 @@ interface IContainer extends ContainerInterface
     /**
      * Bind instance
      *
+     * @template T
      * @param string $abstract
-     * @psalm-param class-string $abstract
-     * @param object $instance
+     * @psalm-param class-string<T> $abstract
+     * @param T $instance
      * @return void
      */
     public function forceInstance(string $abstract, object $instance): void;
@@ -69,10 +71,11 @@ interface IContainer extends ContainerInterface
     /**
      * Bind instanciation way callback
      *
+     * @template T
      * @param string $abstract
-     * @psalm-param class-string $abstract
+     * @psalm-param class-string<T> $abstract
      * @param Closure $factory
-     * @psalm-param Closure(IContainer):object $factory
+     * @psalm-param Closure(IContainer):T $factory
      * @return void
      */
     public function forceFactory(string $abstract, Closure $factory): void;
@@ -89,6 +92,19 @@ interface IContainer extends ContainerInterface
     public function forceBind(string $abstract, string $concrete): void;
 
     /**
+     * Gets instance from container
+     *
+     * @template T
+     * @param string $id
+     * @psalm-param class-string<T> $id
+     * @return object
+     * @psalm-return T
+     * @throws CouldNotBeResolvedException
+     * @psalm-suppress MoreSpecificImplementedParamType
+     */
+    public function get(string $id): object;
+
+    /**
      * Invokes callback with auto injection
      *
      * @template T
@@ -100,17 +116,4 @@ interface IContainer extends ContainerInterface
      * @throws CouldNotBeResolvedException
      */
     public function call(Closure $callback, array $parameters = []): mixed;
-
-    /**
-     * Gets instance from container
-     *
-     * @template T
-     * @param string $id
-     * @psalm-param class-string<T> $id
-     * @return mixed
-     * @psalm-return T
-     * @throws CouldNotBeResolvedException
-     * @psalm-suppress MoreSpecificImplementedParamType
-     */
-    public function get(string $id): mixed;
 }

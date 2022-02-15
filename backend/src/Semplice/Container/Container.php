@@ -47,7 +47,7 @@ class Container implements IContainer
 
     public function __construct(?ClassResolver $resolver = null)
     {
-        $this->resolver = $resolver ?: new ClassResolver($this);
+        $this->resolver = $resolver ?: new ClassResolver();
     }
 
     /**
@@ -112,7 +112,7 @@ class Container implements IContainer
     /**
      * {@inheritDoc}
      */
-    public function get(string $id): mixed
+    public function get(string $id): object
     {
         if (array_key_exists($id, $this->instances)) {
             return $this->instances[$id];
@@ -124,11 +124,12 @@ class Container implements IContainer
             return $this->get($this->bindings[$id]);
         }
 
-        return $this->resolver->resolve($id);
+        return $this->resolver->resolve($id, $this);
     }
 
     /**
      * {@inheritDoc}
+     * @psalm-param class-string $id
      */
     public function has(string $id): bool
     {
@@ -140,7 +141,7 @@ class Container implements IContainer
             return true;
         }
 
-        return $this->resolver->canResolve($id);
+        return $this->resolver->canResolve($id, $this);
     }
 
     /**
@@ -148,6 +149,6 @@ class Container implements IContainer
      */
     public function call(Closure $callback, array $parameters = []): mixed
     {
-        throw new \LogicException('Not implemented yet');
+        throw new \LogicException('Not yet implemented');
     }
 }
