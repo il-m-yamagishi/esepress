@@ -1,7 +1,7 @@
 {
     "name": "semplice/container",
     "description": "Semplice container package",
-    "keywords": ["Semplice", "WordPress"],
+    "keywords": ["Semplice"],
     "type": "library",
     "license": "Apache License 2.0",
     "authors": [

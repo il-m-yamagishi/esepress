@@ -36,6 +36,8 @@ class ContentTypeAwareMiddleware implements MiddlewareInterface
 
         if (str_starts_with($body, '{') || str_starts_with($body, '[')) {
             return $response->withHeader(self::HEADER_NAME, 'application/json');
+        } elseif (str_starts_with($body, '<')) {
+            return $response->withHeader(self::HEADER_NAME, 'text/html');
         }
 
         throw new RuntimeException('Please manually set Content-Type header');

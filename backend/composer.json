@@ -1,6 +1,6 @@
 {
     "name": "semplice/semplice",
-    "description": "Copy of WordPress for study",
+    "description": "Modern PHP simple framework",
     "license": "Apache License 2.0",
     "authors": [
         {
@@ -12,6 +12,7 @@
         "php": ">=8.1.0"
     },
     "require-dev": {
+        "ext-json": "*",
         "laminas/laminas-diactoros": "^2.8",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5",

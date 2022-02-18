@@ -62,9 +62,9 @@ class HttpResponseEmitter implements IHttpResponseEmitter
     private function validateCanEmit(): void
     {
         if ($this->wrapper->hasSentHeader()) {
-            throw new EmitException(sprintf(
+            throw new EmitException(
                 'It could not emit after headers has sent',
-            ));
+            );
         }
 
         if ($this->wrapper->hasObFlushed()) {

@@ -11,10 +11,11 @@
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
-            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">./src/Semplice</directory>
         </include>
         <exclude>
-            <directory>*/vendor/*</directory>
+            <directory>./src/Semplice/*/vendor</directory>
+            <directory>./src/Semplice/*/Tests</directory>
         </exclude>
     </coverage>
 </phpunit>
