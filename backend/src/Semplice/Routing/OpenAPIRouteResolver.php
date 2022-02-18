@@ -15,6 +15,10 @@ use Semplice\Contracts\Routing\IRouteResolver;
 use Semplice\Contracts\Routing\MethodNotAllowedException;
 use Semplice\Contracts\Routing\NotFoundException;
 
+/**
+ * Route resolving with OpenAPI 3.0
+ * @link https://swagger.io/specification/
+ */
 class OpenAPIRouteResolver implements IRouteResolver
 {
     public function __construct(

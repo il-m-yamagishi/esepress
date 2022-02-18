@@ -49,7 +49,7 @@ class RequestHandlerTest extends TestCase
         $container->get(get_class($invoker))
             ->shouldBeCalledOnce()
             ->willReturn($invoker);
-        $container->call([$invoker, '__invoke'], compact('request'))
+        $container->call($invoker, compact('request'))
             ->shouldBeCalledOnce()
             ->willReturn($response->reveal());
 

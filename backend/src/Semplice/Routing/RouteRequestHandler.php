@@ -40,9 +40,9 @@ class RouteRequestHandler implements RequestHandlerInterface
     {
         $invokerClassName = $this->resolver->resolve($request);
         $invokerInstance = $this->container->get($invokerClassName);
-        assert(method_exists($invokerInstance, '__invoke'), 'Invoker must have ::__invoke method');
+        assert(is_callable($invokerInstance), sprintf('Ensure invoker %s is callable', $invokerClassName));
 
-        $response = $this->container->call([$invokerInstance, '__invoke'], compact('request'));
+        $response = $this->container->call($invokerInstance, compact('request'));
         assert($response instanceof ResponseInterface);
 
         return $response;
