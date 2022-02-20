@@ -13,6 +13,7 @@ namespace Semplice\Container;
 use Closure;
 use Semplice\Contracts\Container\AlreadyBoundException;
 use Semplice\Contracts\Container\IContainer;
+use Semplice\Contracts\Container\IServiceLocator;
 
 /**
  * Dependency Injection Container
@@ -43,11 +44,23 @@ class Container implements IContainer
      */
     private array $bindings = [];
 
-    private readonly ClassResolver $resolver;
-
-    public function __construct(?ClassResolver $resolver = null)
-    {
-        $this->resolver = $resolver ?: new ClassResolver();
+    /**
+     * Constructor
+     *
+     * @param IServiceLocator[] $service_locators
+     * @param ClassResolver $resolver
+     */
+    public function __construct(
+        private readonly iterable $service_locators = [],
+        private readonly ClassResolver $resolver = new ClassResolver(),
+    ) {
+        foreach ($this->service_locators as $locator) {
+            assert($locator instanceof IServiceLocator);
+            foreach ($locator->getStaticBindings() as $abstract => $concrete) {
+                $this->bind($abstract, $concrete);
+            }
+            $locator($this);
+        }
     }
 
     /**

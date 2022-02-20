@@ -15,9 +15,6 @@
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0"
     },
-    "require-dev": {
-        "laminas/laminas-diactoros": "^2.8"
-    },
     "autoload": {
         "psr-4": {
             "Semplice\\Routing\\": ""

@@ -22,7 +22,7 @@ use Semplice\Contracts\Routing\IRouteResolver;
 class RouteRequestHandler implements RequestHandlerInterface
 {
     /**
-     * Undocumented function
+     * Constructor
      *
      * @param IRouteResolver $resolver
      * @param IContainer $container

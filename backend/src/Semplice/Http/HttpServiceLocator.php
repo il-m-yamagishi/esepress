@@ -12,6 +12,7 @@ namespace Semplice\Http;
 
 use Semplice\Contracts\Container\IContainer;
 use Semplice\Contracts\Container\IServiceLocator;
+use Semplice\Contracts\Http\IHttpErrorHandler;
 use Semplice\Contracts\Http\IHttpResponseEmitter;
 use Semplice\Contracts\Http\IHttpRunner;
 
@@ -25,6 +26,7 @@ class HttpServiceLocator implements IServiceLocator
         return [
             IHttpResponseEmitter::class => HttpResponseEmitter::class,
             IHttpRunner::class => HttpRunner::class,
+            IHttpErrorHandler::class => ProductionHttpErrorHandler::class,
         ];
     }
 

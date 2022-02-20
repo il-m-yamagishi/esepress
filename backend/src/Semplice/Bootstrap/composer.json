@@ -1,6 +1,6 @@
 {
-    "name": "semplice/http",
-    "description": "Semplice HTTP package",
+    "name": "semplice/bootstrap",
+    "description": "Semplice bootstrap package",
     "keywords": ["Semplice"],
     "type": "library",
     "license": "Apache License 2.0",
@@ -12,16 +12,11 @@
     ],
     "require": {
         "php": ">=8.1.0",
-        "ext-json": "*",
-        "psr/http-factory": "^1.0",
-        "psr/http-message": "^1.0",
-        "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0",
         "psr/log": "^3.0"
     },
     "autoload": {
         "psr-4": {
-            "Semplice\\Http\\": ""
+            "Semplice\\Bootstrap\\": ""
         }
     }
 }
