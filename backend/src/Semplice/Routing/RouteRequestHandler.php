@@ -38,11 +38,11 @@ class RouteRequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $invokerClassName = $this->resolver->resolve($request);
-        $invokerInstance = $this->container->get($invokerClassName);
-        assert(is_callable($invokerInstance), sprintf('Ensure invoker %s is callable', $invokerClassName));
+        $invoker_class_name = $this->resolver->resolve($request);
+        $invoker_instance = $this->container->get($invoker_class_name);
+        assert(is_callable($invoker_instance), sprintf('Ensure invoker %s is callable', $invoker_class_name));
 
-        $response = $this->container->call($invokerInstance, compact('request'));
+        $response = $this->container->call($invoker_instance, compact('request'));
         assert($response instanceof ResponseInterface);
 
         return $response;

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 
 /**
  * @author Masaru Yamagishi <yamagishi.iloop@gmail.com>
@@ -15,6 +15,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use ReflectionException;
 use Semplice\Container\ClassResolver;
 use Semplice\Container\Container;
+use Semplice\Contracts\Container\CouldNotBeResolvedException;
 
 class ClassResolverTest extends TestCase
 {
@@ -69,21 +70,21 @@ class ClassResolverTest extends TestCase
     /**
      * @test
      * @dataProvider dataProviderReflectionExceptions
-     * @param string $exceptionMessage
-     * @param string $concreteClass
-     * @psalm-param class-string $concreteClass
+     * @param string $exception_message
+     * @param string $concrete_class
+     * @psalm-param class-string $concrete_class
      * @return void
      */
     public function test_try_to_resolve_unresolvable_class(
-        string $exceptionMessage,
-        string $concreteClass,
+        string $exception_message,
+        string $concrete_class,
     ): void {
         $container = $this->prophesize(Container::class);
         $this->expectException(ReflectionException::class);
-        $this->expectExceptionMessage($exceptionMessage);
+        $this->expectExceptionMessage($exception_message);
 
         $resolver = new ClassResolver();
-        $resolver->resolve($concreteClass, $container->reveal());
+        $resolver->resolve($concrete_class, $container->reveal());
     }
 
     /**
@@ -94,10 +95,10 @@ class ClassResolverTest extends TestCase
         $container = $this->prophesize(Container::class);
         $resolver = new ClassResolver();
 
-        $expectedClass = ClassResolverUndefinedConstructClass::class;
-        $actual = $resolver->resolve($expectedClass, $container->reveal());
+        $expected_class = ClassResolverUndefinedConstructClass::class;
+        $actual = $resolver->resolve($expected_class, $container->reveal());
 
-        $this->assertInstanceOf($expectedClass, $actual);
+        $this->assertInstanceOf($expected_class, $actual);
     }
 
     /**
@@ -108,10 +109,10 @@ class ClassResolverTest extends TestCase
         $container = $this->prophesize(Container::class);
         $resolver = new ClassResolver();
 
-        $expectedClass = ClassResolverNoParametersClass::class;
-        $actual = $resolver->resolve($expectedClass, $container->reveal());
+        $expected_class = ClassResolverNoParametersClass::class;
+        $actual = $resolver->resolve($expected_class, $container->reveal());
 
-        $this->assertInstanceOf($expectedClass, $actual);
+        $this->assertInstanceOf($expected_class, $actual);
     }
 
     /**
@@ -119,12 +120,12 @@ class ClassResolverTest extends TestCase
      */
     public function test_resolve_causes_infinite_loop(): void
     {
-        $this->expectException(ReflectionException::class);
-        $this->expectExceptionMessage('Resolve infinite loop detected on "Semplice\Container\Tests\ClassResolverInfiniteLoopClass"');
+        $this->expectException(CouldNotBeResolvedException::class);
+        $this->expectExceptionMessage('"Semplice\Container\Tests\ClassResolverInfiniteLoopClass" could not be resolved because: Resolving loop detected on "Semplice\Container\Tests\ClassResolverInfiniteLoopClass"');
 
         $resolver = new ClassResolver();
         // depends on concrete class to reproduce infinite loop
-        $container = new Container($resolver);
+        $container = new Container(resolver: $resolver);
         $resolver->resolve(ClassResolverInfiniteLoopClass::class, $container);
     }
 
@@ -135,7 +136,7 @@ class ClassResolverTest extends TestCase
     {
         $resolver = new ClassResolver();
         // depends on concrete class to reproduce recursive get
-        $container = new Container($resolver);
+        $container = new Container(resolver: $resolver);
         $container->instance(ClassResolverA::class, new ClassResolverA('config_test'));
 
         $actual = $resolver->resolve(ClassResolverD::class, $container);
@@ -150,13 +151,13 @@ class ClassResolverTest extends TestCase
     {
         $resolver = new ClassResolver();
         // depends on concrete class to reproduce recursive get
-        $container = new Container($resolver);
+        $container = new Container(resolver: $resolver);
 
         // ClassResolverA won't resolve
         // $container->instance(ClassResolverA::class, new ClassResolverA('config_test'));
 
-        $this->expectException(ReflectionException::class);
-        $this->expectExceptionMessage('Primitive type "string" cannot resolve');
+        $this->expectException(CouldNotBeResolvedException::class);
+        $this->expectExceptionMessage('"Semplice\Container\Tests\ClassResolverA" could not be resolved because: Primitive type "string" cannot resolve');
 
         $resolver->resolve(ClassResolverD::class, $container);
     }
@@ -168,7 +169,7 @@ class ClassResolverTest extends TestCase
     {
         $resolver = new ClassResolver();
         // depends on concrete class to reproduce recursive get
-        $container = new Container($resolver);
+        $container = new Container(resolver: $resolver);
 
         $a = new ClassResolverA('config_test');
         $container->instance(ClassResolverA::class, $a);

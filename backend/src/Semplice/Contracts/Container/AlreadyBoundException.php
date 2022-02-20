@@ -11,10 +11,11 @@ declare(strict_types=1);
 namespace Semplice\Contracts\Container;
 
 use LogicException;
+use Psr\Container\ContainerExceptionInterface;
 
 /**
  * It is already bound to container, so it cannot bind
  */
-class AlreadyBoundException extends LogicException
+class AlreadyBoundException extends LogicException implements ContainerExceptionInterface
 {
 }

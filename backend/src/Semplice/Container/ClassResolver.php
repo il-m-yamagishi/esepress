@@ -30,7 +30,7 @@ class ClassResolver
      * @var array
      * @psalm-var array<class-string, boolean>
      */
-    private array $resolvingConcretes = [];
+    private array $resolving_concretes = [];
 
     /**
      * Resolves concrete instance and instanciate that.
@@ -51,18 +51,18 @@ class ClassResolver
             ));
         }
 
-        if (array_key_exists($concrete, $this->resolvingConcretes)) {
+        if (array_key_exists($concrete, $this->resolving_concretes)) {
             throw new ReflectionException(sprintf(
-                'Resolve infinite loop detected on "%s"',
+                'Resolving loop detected on "%s"',
                 $concrete,
             ));
         }
-        $this->resolvingConcretes[$concrete] = true;
+        $this->resolving_concretes[$concrete] = true;
 
         $constructor = $ref->getConstructor();
         if ($constructor === null) {
             // No constructor, it can make no args
-            unset($this->resolvingConcretes[$concrete]);
+            unset($this->resolving_concretes[$concrete]);
             return $ref->newInstance();
         }
 
@@ -70,7 +70,7 @@ class ClassResolver
 
         if (count($params) === 0) {
             // No parameter constructor
-            unset($this->resolvingConcretes[$concrete]);
+            unset($this->resolving_concretes[$concrete]);
             return $ref->newInstance();
         }
 
@@ -79,7 +79,7 @@ class ClassResolver
             $resolved_params[$param->getName()] = $this->resolveParameter($param, $container);
         }
 
-        unset($this->resolvingConcretes[$concrete]);
+        unset($this->resolving_concretes[$concrete]);
         return $ref->newInstanceArgs($resolved_params);
     }
 
@@ -95,7 +95,7 @@ class ClassResolver
         try {
             $this->resolve($concrete, $container);
             return true;
-        } catch (ReflectionException $_) {
+        } catch (ReflectionException) {
             return false;
         }
     }
@@ -166,7 +166,8 @@ class ClassResolver
             $name === 'object' ||
             $name === 'callable' ||
             $name === 'iterable' ||
-            $name === 'resource'
+            $name === 'resource' ||
+            $name === 'mixed'
         ) {
             throw new ReflectionException(sprintf('Primitive type "%s" cannot resolve', $name));
         }

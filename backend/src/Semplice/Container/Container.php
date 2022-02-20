@@ -11,7 +11,9 @@ declare(strict_types=1);
 namespace Semplice\Container;
 
 use Closure;
+use ReflectionException;
 use Semplice\Contracts\Container\AlreadyBoundException;
+use Semplice\Contracts\Container\CouldNotBeResolvedException;
 use Semplice\Contracts\Container\IContainer;
 use Semplice\Contracts\Container\IServiceLocator;
 
@@ -23,16 +25,19 @@ class Container implements IContainer
     /**
      * Manually registered instances
      *
+     * @todo avoid request-crossed instances for long-running-process system like RoadRunner or Swoole
+     * @template T
      * @var array<string, object>
-     * @psalm-var array<class-string, object>
+     * @psalm-var array<class-string<T>, T>
      */
     private array $instances = [];
 
     /**
      * Manually registered factories
      *
+     * @template T
      * @var array<string, Closure>
-     * @psalm-var array<class-string, Closure(IContainer):object>
+     * @psalm-var array<class-string<T>, Closure(IContainer):T>
      */
     private array $factories = [];
 
@@ -127,17 +132,21 @@ class Container implements IContainer
      */
     public function get(string $id): object
     {
-        if (array_key_exists($id, $this->instances)) {
-            return $this->instances[$id];
-        } elseif (array_key_exists($id, $this->factories)) {
-            $instance = $this->factories[$id]($this);
-            assert($instance instanceof $id, 'The instance must extends/implement abstract');
-            return $instance;
-        } elseif (array_key_exists($id, $this->bindings)) {
-            return $this->get($this->bindings[$id]);
-        }
+        try {
+            if (array_key_exists($id, $this->instances)) {
+                return $this->instances[$id];
+            } elseif (array_key_exists($id, $this->factories)) {
+                $instance = $this->factories[$id]($this);
+                assert($instance instanceof $id, 'The instance must extends/implement abstract');
+                return $instance;
+            } elseif (array_key_exists($id, $this->bindings)) {
+                return $this->get($this->bindings[$id]);
+            }
 
-        return $this->resolver->resolve($id, $this);
+            return $this->resolver->resolve($id, $this);
+        } catch (ReflectionException $reflection_exception) {
+            throw new CouldNotBeResolvedException($id, $reflection_exception);
+        }
     }
 
     /**
@@ -162,6 +171,10 @@ class Container implements IContainer
      */
     public function call(callable $func, array $parameters = []): mixed
     {
-        return $this->resolver->call($func, $this, $parameters);
+        try {
+            return $this->resolver->call($func, $this, $parameters);
+        } catch (ReflectionException $reflection_exception) {
+            throw new CouldNotBeResolvedException(get_debug_type($func), $reflection_exception);
+        }
     }
 }
