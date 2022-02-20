@@ -3,7 +3,7 @@
     "description": "Semplice routing package",
     "keywords": ["Semplice"],
     "type": "library",
-    "license": "Apache License 2.0",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Masaru Yamagishi",

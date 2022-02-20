@@ -2,8 +2,9 @@ name: PHP Test & Lint
 
 on:
   push:
-    branches:
-    - main
+    paths:
+      - '.github/**'
+      - 'backend/**'
 
 jobs:
   build:
@@ -20,19 +21,19 @@ jobs:
         coverage: pcov
 
     - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+      run: cd backend && composer validate --strict
 
     - name: Cache composer packages
       id: composer-cache
       uses: actions/cache@v2
       with:
-        path: vendor
+        path: backend/vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: cd backend && composer install --prefer-dist --no-progress
 
     - name: Run test
-      run: vendor/bin/phpunit --coverage-text
+      run: cd backend && vendor/bin/phpunit --coverage-text

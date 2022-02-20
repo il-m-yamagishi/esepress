@@ -28,8 +28,10 @@ class ErrorHandler
      */
     protected static string $reserved_memory = '';
 
-    protected ?callable $previous_error_handler = null;
-    protected ?callable $previous_exception_handler = null;
+    /** @var callable|null $previous_error_handler */
+    protected $previous_error_handler = null;
+    /** @var callable|null $previous_exception_handler */
+    protected $previous_exception_handler = null;
 
     public function __construct(
         private readonly LoggerInterface $logger,
