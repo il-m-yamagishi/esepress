@@ -18,6 +18,9 @@ use Semplice\Contracts\Bootstrap\FatalError;
 use Semplice\Contracts\Bootstrap\OutofMemoryError;
 use Throwable;
 
+/**
+ * PHP Error and Exception handler
+ */
 class ErrorHandler
 {
     /**
@@ -83,7 +86,7 @@ class ErrorHandler
         }
 
         if (error_reporting() & $level) {
-            // raises ErrorException and will be catched by handleException
+            // raises ErrorException and will be caught by handleException
             throw new ErrorException($message, 0, $level, $file, (int)$line);
         }
 

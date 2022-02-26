@@ -21,6 +21,10 @@ use Semplice\Contracts\Routing\NotFoundException;
  */
 class OpenAPIRouteResolver implements IRouteResolver
 {
+    /**
+     * @param array $raw
+     * @psalm-param array{paths: ?array<string, array>} $raw
+     */
     public function __construct(
         private readonly array $raw,
     ) {
